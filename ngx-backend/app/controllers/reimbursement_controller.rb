@@ -1,3 +1,4 @@
+
 require 'logger'
 
 # rails new <name the app>
