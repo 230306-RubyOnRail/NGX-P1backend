@@ -8,8 +8,11 @@ class ReimbursementController < ApplicationController
     @logger = Logger.new(STDOUT)
     @logger.level = Logger::DEBUG
   end
+
   def update
     
+    # auth
+
     @logger.info('Finding record...')
 
     sample = JSON.parse(request.body.read)
@@ -24,9 +27,10 @@ class ReimbursementController < ApplicationController
       sample.merge!({'updated_at'=> date})
 
       #Update the record if possible
-      if record.update(sample['id'], sample)
+      if record.update(sample)
         @logger.info("Successfully updated record at ID: #{sample['id']}!")
-        return {status: [201, "Created"], body: {message: 'reimbursement updated successfully'}}
+        # return {status: [201, "Created"], body: {message: 'reimbursement updated successfully'}}
+        head :ok
       else
         @logger.info("Failed to update record at ID: #{sample['id']}!")
         return {status: [422, "Unprocessable Entity"], body: {message: 'Invalid email or password'}}
@@ -53,10 +57,10 @@ class ReimbursementController < ApplicationController
       @logger.info('Found record, deleting record...')
       record.delete
       @logger.info('Deleted record!')
-      return {status: [200, 'OK'], body: "Successfully deleted content"}
+      head :ok
     else
       @logger.info('Record was not in the database')
-      return {status: [200, "OK"], body: "Successfully deleted content"}
+      head :ok
     end
   end
 end

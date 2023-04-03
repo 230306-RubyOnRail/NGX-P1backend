@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   put '/reimbursement/:id', to: 'reimbursement#update'
+  delete '/reimbursement/:id', to: 'reimbursement#destroy'
 end
