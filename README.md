@@ -1,5 +1,4 @@
 # NGX-P1backend
-# NGX-P1backend
 
 # Setting up your enviroment
 

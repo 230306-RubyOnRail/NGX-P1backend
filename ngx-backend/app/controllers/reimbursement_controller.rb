@@ -1,34 +1,67 @@
-class ReimbursementController < ApplicationController
-  def update
-    #find if reimbursement exists on the database
-    record = Reimbursement.find(request.body['reimb_id'])
-    
-    #check if the record from the db is empty
-    #if it is empty then give it an empty string
-    db_record = ""
-    db_record = record[0][:reimb_id] unless record.empty?
-    
-    #update the date
-    date = Time.now.getutc
-    @request[:body]['reimb_update_date'] = "#{date}"
 
-    #need to update if I find the id
-    if db_record.to_s == @request[:body]['reimb_id'].to_s 
-      reimburse = Reimbursement.new(@request[:body])
-      
-      # if i am able to update the record
-      if reimburse.update(db_record.to_s,@request[:body])
-        # @logger.info("updating reimbursement")
-        return {status: [201, "Created"], body: {message: 'reimbursement updated successfully'}}
+require 'logger'
+
+# rails new <name the app>
+
+class ReimbursementController < ApplicationController
+  def initialize
+    super
+    @logger = Logger.new(STDOUT)
+    @logger.level = Logger::DEBUG
+  end
+
+  def update
+    
+    # auth
+
+    @logger.info('Finding record...')
+
+    sample = JSON.parse(request.body.read)
+    
+    #find if reimbursement exists on the database
+    record = Reimbursement.find(sample['id'])
+    if record !=nil
+      @logger.info("Updating record on record #{sample['id']}")
+
+      #update the time stamp
+      date = Time.now.getutc
+      sample.merge!({'updated_at'=> date})
+
+      #Update the record if possible
+      if record.update(sample)
+        @logger.info("Successfully updated record at ID: #{sample['id']}!")
+        # return {status: [201, "Created"], body: {message: 'reimbursement updated successfully'}}
+        head :ok
       else
+        @logger.info("Failed to update record at ID: #{sample['id']}!")
         return {status: [422, "Unprocessable Entity"], body: {message: 'Invalid email or password'}}
       end
+
+
     else
-      #cannot find
+      @logger.info("Cannot find record")
       return {status: [204, "No Content"]}
     end
   end
 
   def destroy
+    
+    @logger.info('Finding record...')
+
+    sample = JSON.parse(request.body.read)
+    
+    #find if reimbursement exists on the database
+    record = Reimbursement.find(sample['id'])
+
+    if record != nil
+      #delete record
+      @logger.info('Found record, deleting record...')
+      record.delete
+      @logger.info('Deleted record!')
+      head :ok
+    else
+      @logger.info('Record was not in the database')
+      head :ok
+    end
   end
 end
