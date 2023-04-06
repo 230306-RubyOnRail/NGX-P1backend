@@ -15,8 +15,8 @@ development:
 
   adapter: postgresql
   database: postgres
-  username: ruby_app
-  password: ruby_secret
+  username: postgres
+  password: secretpassword
   host: localhost
   port: 5432
   timeout: 5000
