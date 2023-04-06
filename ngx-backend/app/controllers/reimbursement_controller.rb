@@ -64,4 +64,25 @@ class ReimbursementController < ApplicationController
       head :ok
     end
   end
+
+  def show 
+    @logger.info("request")
+    sample = JSON.parse(request.body.read)
+  
+    #find if reimbursement exists on the database
+    record = Reimbursement.find(sample['id'])
+    if record !=nil
+      @logger.info("Updating record on record #{sample['id']}")
+    end
+    #show
+    @reimbursement_list = Reimbursement.where(id:sample['id']).first
+
+    render status: :ok , json:{reimbursement: @reimbursement_list} 
+    end
+
+  def index
+    @reimbursement_list = Reimbursement.all 
+
+    render status: :ok, json:{reimbursement: @reimbursement_list}
+  end
 end
