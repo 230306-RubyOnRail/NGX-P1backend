@@ -11,7 +11,8 @@ class ReimbursementController < ApplicationController
 
   def update
     
-    # auth
+    # authenticate
+    # find role
 
     @logger.info('Finding record...')
 
@@ -33,13 +34,13 @@ class ReimbursementController < ApplicationController
         head :ok
       else
         @logger.info("Failed to update record at ID: #{sample['id']}!")
-        return {status: [422, "Unprocessable Entity"], body: {message: 'Invalid email or password'}}
+        head :unprocessable_entity, body: {message: 'Invalid email or password'}
       end
 
 
     else
       @logger.info("Cannot find record")
-      return {status: [204, "No Content"]}
+      head :no_content
     end
   end
 
@@ -57,9 +58,11 @@ class ReimbursementController < ApplicationController
       @logger.info('Found record, deleting record...')
       record.delete
       @logger.info('Deleted record!')
+
       head :ok
     else
       @logger.info('Record was not in the database')
+
       head :ok
     end
   end
