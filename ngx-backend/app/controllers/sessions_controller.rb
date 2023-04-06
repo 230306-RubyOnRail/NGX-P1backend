@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
     credentials = JSON.parse(request.body.read)
     user = User.find_by(email: credentials["email"])
     if user&.authenticate(credentials["password"])
-      render json: {token: JSONWebToken.encode(user_id: user.id), user_id: user.id}, status: :ok
+      render json: {token: JSONWebToken.encode(user_id: user.id), user_id: user.id, name: user.name}, status: :ok
     else
       render json: { error: "Invalid email or password"}, status: :unauthorized
     end
