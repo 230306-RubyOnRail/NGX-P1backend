@@ -4,6 +4,7 @@ require 'logger'
 # rails new <name the app>
 
 class ReimbursementController < ApplicationController
+  include Authenticatable
   def initialize
     super
     @logger = Logger.new(STDOUT)
