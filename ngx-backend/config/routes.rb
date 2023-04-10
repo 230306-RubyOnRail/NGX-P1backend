@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get 'user/create'
-  get 'reimbursement/update'
-  get 'reimbursement/destroy'
+  # get 'reimbursement/update'
+  # get 'reimbursement/destroy'
   get 'reimbursement/:id', to: 'reimbursement#show'
   get 'reimbursement/', to:'reimbursement#index'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   # root "articles#index"
   post '/user/new', to: 'user#create'
   post '/login', to: 'sessions#create'
+  post '/reimbursement/new', to: 'reimbursement#create'
 
 
   put '/reimbursement/:id', to: 'reimbursement#update'

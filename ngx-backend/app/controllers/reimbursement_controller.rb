@@ -10,12 +10,41 @@ class ReimbursementController < ApplicationController
     @logger.level = Logger::DEBUG
   end
 
+
+  # EMPLOYEE is authorized to submit a request
+  def create
+    @logger.info("creating a new reimburement")
+
+    sample = JSON.parse(request.body.read)
+
+    @logger.info("Checking Authorization")
+    # user = User.where(sample['user_id'])
+    # if(!user.)
+
+    date = Time.now.getutc
+    sample.merge!({updated_at: date})
+
+    @logger.info("Attempting to save reimburement")
+    record = Reimbursement.new(sample)
+    if record.save
+      @logger.info("Successfully created a new reimburement")
+      render json: { reimbursement: record}, status: :created
+    else
+      @logger.info("There was a problem creating a new reimburement")
+      render json: record.errors, status: :unprocessable_entity
+    end
+
+
+  end
+
+  # EMPLOYEE is allowed to update THEIR requests
+  # MANAGER is allowed to update EVERYONE's STATUS requests
   def update
     
     # authenticate
     # find role
 
-    @logger.info('Finding record...')
+    @logger.info('Finding record to update...')
 
     sample = JSON.parse(request.body.read)
     
@@ -45,9 +74,11 @@ class ReimbursementController < ApplicationController
     end
   end
 
+  # EMPLOYEE is allowed to delete THIER request
+  # MANAGER is allowed to delete ANY request
   def destroy
     
-    @logger.info('Finding record...')
+    @logger.info('Finding record to destroy...')
 
     sample = JSON.parse(request.body.read)
     
@@ -68,6 +99,7 @@ class ReimbursementController < ApplicationController
     end
   end
 
+  # EMPLOYEE is allowed to see THIER reimburesments
   def show 
     @logger.info("request")
     sample = JSON.parse(request.body.read)
@@ -75,7 +107,7 @@ class ReimbursementController < ApplicationController
     #find if reimbursement exists on the database
     record = Reimbursement.find(sample['id'])
     if record !=nil
-      @logger.info("Updating record on record #{sample['id']}")
+      @logger.info("Showing record on record #{sample['id']}")
     end
     #show
     @reimbursement_list = Reimbursement.where(id:sample['id']).first
@@ -83,6 +115,7 @@ class ReimbursementController < ApplicationController
     render status: :ok , json:{reimbursement: @reimbursement_list} 
     end
 
+  # MANAGER is allowed to see ALL reimburements
   def index
     @reimbursement_list = Reimbursement.all 
 
