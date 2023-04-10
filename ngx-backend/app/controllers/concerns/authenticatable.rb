@@ -13,12 +13,14 @@ module Authenticatable
 
   def authenticate_request!
     puts "Authenticating request"
+    token_data = JSONWebToken.decode(token)
     @current_user = User.find(JSONWebToken.decode(token)['user_id'])
     render json: { error: 'Not Authorized' }, status: 401 unless @current_user
-    render json: { error: 'You are not allowed to perform this action' }, status: 403 unless params[:user_id].to_i == @current_user.id
+    render json: { error: 'You are not allowed to perform this action' }, status: 403 unless @current_user.id == token_data['user_id'].to_i
   end
 
   def token
     request.headers['Authorization'].split(' ').last if request.headers['Authorization'].present?
   end
+
 end
