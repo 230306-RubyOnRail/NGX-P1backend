@@ -1,11 +1,12 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  status: MyString
-  comment: MyString
+gas_mileage:
+  
+  id: 2
+  status: approved
   approval_date: 2023-04-05 15:24:23
 
-two:
-  status: MyString
+ticket:
+  status: approve
   comment: MyString
   approval_date: 2023-04-05 15:24:23

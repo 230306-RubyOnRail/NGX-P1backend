@@ -10,9 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
+ActiveRecord::Schema[7.0].define(version: 2023_04_07_192057) do
+=======
 
 ActiveRecord::Schema[7.0].define(version: 2023_04_07_191218) do
 
+>>>>>>> bbffbd348369f0e36abdfe218150cb3f263beef1
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +26,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_07_191218) do
     t.datetime "approval_date", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "price"
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_reimbursements_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -34,4 +41,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_07_191218) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "reimbursements", "users"
 end
