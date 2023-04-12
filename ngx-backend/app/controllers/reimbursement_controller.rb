@@ -46,11 +46,17 @@ class ReimbursementController < ApplicationController
     
     # authenticate
     # find role
-
+    
     @logger.info('Finding record to update...')
 
     sample = JSON.parse(request.body.read)
     
+    if sample['status'] != nil
+      #check if the client is changing the status
+      if !current_user.manager
+        return head :unauthorized
+      end
+    end
     #find if reimbursement exists on the database
     record = Reimbursement.find(sample['id'])
     if record !=nil

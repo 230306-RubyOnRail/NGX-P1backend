@@ -10,8 +10,8 @@ Rails.application.routes.draw do
   # root "articles#index"
   post '/user/new', to: 'user#create'
 
+  # post '/login', to: 'sessions#create'
   post '/reimbursement/new', to: 'reimbursement#create'
-
   post '/auth/login', to: 'sessions#create'
   get '/users', to: 'user#index'
 
