@@ -14,28 +14,30 @@ class ReimbursementController < ApplicationController
 
   # EMPLOYEE is authorized to submit a request
   def create
-    @logger.info("creating a new reimburement")
+    if @current_user['manager'] == false || 'null'
+      @logger.info("creating a new reimburement")
 
-    sample = JSON.parse(request.body.read)
+      sample = JSON.parse(request.body.read)
 
-    @logger.info("Checking Authorization")
-    # user = User.where(sample['user_id'])
-    # if(!user.)
+      @logger.info("Checking Authorization")
+      # user = User.where(sample['user_id'])
+      # if(!user.)
 
-    date = Time.now.getutc
-    sample.merge!({updated_at: date})
+      date = Time.now.getutc
+      sample.merge!({updated_at: date})
 
-    @logger.info("Attempting to save reimburement")
-    record = Reimbursement.new(sample)
-    if record.save
-      @logger.info("Successfully created a new reimburement")
-      render json: { reimbursement: record}, status: :created
+      @logger.info("Attempting to save reimburement")
+      record = Reimbursement.new(sample)
+      if record.save
+        @logger.info("Successfully created a new reimburement")
+        render json: { reimbursement: record}, status: :created
+      else
+        @logger.info("There was a problem creating a new reimburement")
+        render json: record.errors, status: :unprocessable_entity
+      end
     else
-      @logger.info("There was a problem creating a new reimburement")
-      render json: record.errors, status: :unprocessable_entity
+      render json: { error: "You are not authorized to access this resource." }, status: :unauthorized
     end
-
-
   end
 
   # EMPLOYEE is allowed to update THEIR requests
@@ -107,25 +109,32 @@ class ReimbursementController < ApplicationController
   end
 
   # EMPLOYEE is allowed to see THIER reimburesments
-  def show 
-    @logger.info("request")
-    sample = JSON.parse(request.body.read)
+  def show
+    if @current_user['manager'] == false || 'null'
+      @logger.info("request")
+      sample = JSON.parse(request.body.read)
   
-    #find if reimbursement exists on the database
-    record = Reimbursement.find(sample['id'])
-    if record !=nil
-      @logger.info("Showing record on record #{sample['id']}")
-    end
-    #show
-    @reimbursement_list = Reimbursement.where(id:sample['id']).first
+      #find if reimbursement exists on the database
+      record = Reimbursement.find(sample['id'])
+      if record !=nil
+        @logger.info("Showing record on record #{sample['id']}")
+      end
+      #show
+      @reimbursement_list = Reimbursement.where(id:sample['id']).first
 
-    render status: :ok , json:{reimbursement: @reimbursement_list} 
+      render status: :ok , json:{reimbursement: @reimbursement_list}
+    else
+      render json: { error: "You are not authorized to access this resource." }, status: :unauthorized
     end
+  end
 
   # MANAGER is allowed to see ALL reimburements
   def index
-    @reimbursement_list = Reimbursement.all 
-
-    render status: :ok, json:{reimbursement: @reimbursement_list}
+    if @current_user['manager'] == true
+      @reimbursement_list = Reimbursement.all
+      render status: :ok, json:{reimbursement: @reimbursement_list}
+    else
+      render json: { error: "You are not authorized to access this resource." }, status: :unauthorized
+    end
   end
 end

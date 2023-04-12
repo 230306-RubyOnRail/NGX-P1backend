@@ -9,10 +9,12 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   post '/user/new', to: 'user#create'
+
   # post '/login', to: 'sessions#create'
   post '/reimbursement/new', to: 'reimbursement#create'
   post '/auth/login', to: 'sessions#create'
   get '/users', to: 'user#index'
+
 
 
   put '/reimbursement/:id', to: 'reimbursement#update'
