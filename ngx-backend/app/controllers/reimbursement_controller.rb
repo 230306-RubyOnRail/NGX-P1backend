@@ -110,19 +110,17 @@ class ReimbursementController < ApplicationController
 
   # EMPLOYEE is allowed to see THIER reimburesments
   def show
-    if @current_user['manager'] == false || 'null'
-      @logger.info("request")
-      sample = JSON.parse(request.body.read)
-  
+    if current_user.manager == false || 'null'
+      @logger.info("Parsing request at show")
+      
+      @logger.info("parsed request")
       #find if reimbursement exists on the database
-      record = Reimbursement.find(sample['id'])
+      record = Reimbursement.where(user_id: current_user.id)
       if record !=nil
-        @logger.info("Showing record on record #{sample['id']}")
+        @logger.info("Showing record on record #{current_user.id}")
+        #show
+        render status: :ok , json:{reimbursement: record}
       end
-      #show
-      @reimbursement_list = Reimbursement.where(id:sample['id']).first
-
-      render status: :ok , json:{reimbursement: @reimbursement_list}
     else
       render json: { error: "You are not authorized to access this resource." }, status: :unauthorized
     end
@@ -130,7 +128,7 @@ class ReimbursementController < ApplicationController
 
   # MANAGER is allowed to see ALL reimburements
   def index
-    if @current_user['manager'] == true
+    if current_user.manager
       @reimbursement_list = Reimbursement.all
       render status: :ok, json:{reimbursement: @reimbursement_list}
     else
