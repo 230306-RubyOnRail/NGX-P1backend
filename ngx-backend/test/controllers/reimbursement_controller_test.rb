@@ -52,8 +52,9 @@ class ReimbursementControllerTest < ActionDispatch::IntegrationTest
   end
 
   
-  # test "should be able destroy any requests as a manager" do
-  #   get reimbursement_destroy_url
-  #   assert_response :success
-  # end
+  test "should be able destroy any requests as a manager" do
+    delete '/reimbursement/:id', headers: @Auth_user1, params: {id: @reim1.id}, as: :json
+    assert_equal "delete", @controller.action_name
+    assert_response :success
+  end
 end

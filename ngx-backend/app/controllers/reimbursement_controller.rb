@@ -14,7 +14,7 @@ class ReimbursementController < ApplicationController
 
   # EMPLOYEE is authorized to submit a request
   def create
-    if @current_user['manager'] == false || 'null'
+    if current_user.manager == false || 'null'
       @logger.info("creating a new reimburement")
 
       sample = JSON.parse(request.body.read)
@@ -24,15 +24,17 @@ class ReimbursementController < ApplicationController
       # if(!user.)
 
       date = Time.now.getutc
-      sample.merge!({updated_at: date})
+      sample.merge!({updated_at: date, created_at: date, user_id: current_user.id})
 
       @logger.info("Attempting to save reimburement")
       record = Reimbursement.new(sample)
+      puts(sample)
       if record.save
         @logger.info("Successfully created a new reimburement")
         render json: { reimbursement: record}, status: :created
       else
         @logger.info("There was a problem creating a new reimburement")
+        puts(record.errors.inspect)
         render json: record.errors, status: :unprocessable_entity
       end
     else
@@ -88,11 +90,9 @@ class ReimbursementController < ApplicationController
   def destroy
     
     @logger.info('Finding record to destroy...')
-
-    sample = JSON.parse(request.body.read)
     
     #find if reimbursement exists on the database
-    record = Reimbursement.find(sample['id'])
+    record = Reimbursement.find(params["id"])
 
     if record != nil
       #delete record
