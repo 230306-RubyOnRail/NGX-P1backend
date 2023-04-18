@@ -13,14 +13,23 @@ development:
   <<: *default
   # database: db/development.sqlite3
 
+  # adapter: postgresql
+  # database: postgres
+  # username: postgres
+  # password: secretpassword
+  # host: localhost
+  # port: 5432
+  # timeout: 5000
+  # pool: 10
   adapter: postgresql
   database: postgres
   username: postgres
-  password: secretpassword
-  host: localhost
+  password: password
+  host: ruby-on-rails-x230306.ccitzzlkkej0.us-east-1.rds.amazonaws.com
   port: 5432
   timeout: 5000
   pool: 10
+
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
