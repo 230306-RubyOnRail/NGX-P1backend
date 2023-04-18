@@ -1,0 +1,21 @@
+# Get the ruby version
+FROM ruby:3.2.1
+
+# RUN apt-get update --  do not need to update
+
+# RUN mkdir /ngx-backend/ -- line 8 does it for you
+
+# makes
+WORKDIR /app
+
+COPY Gemfile Gemfile.lock ./
+
+RUN gem install bundler
+
+RUN bundle install
+#  copies local directory to app dictorty in my container ngx back end
+COPY . .
+
+ENV RAILS_ENV development
+
+CMD [ "bundle", "exec", "rails", "s" , "-b", "0.0.0.0", "-p", "3000"]

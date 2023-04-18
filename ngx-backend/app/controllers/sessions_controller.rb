@@ -17,6 +17,7 @@ class SessionsController < ApplicationController
       render json: {token: JSONWebToken.encode(user_id: user.id, name: user.name, manager: user.manager), id: user.id, name: user.name, manager: user.manager}, status: :created
     else
       render json: { error: "Invalid email or password"}, status: :unauthorized
+      
     end
   end
 end
