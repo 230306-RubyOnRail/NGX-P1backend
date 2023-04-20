@@ -1,0 +1,38 @@
+name: "EC2 Workflow"
+on:
+  workflow_dispatch:
+env:
+      #  bucket_name: "<example-bucket-name>"
+      AWS_REGION: us_east_2
+      REMOTE_HOST: "ubuntu@ec2-44-205-255-156.compute-1.amazonaws.com"
+      REMOTE_USER: "ubuntu"
+permissions:
+  contents: read
+  id-token: write
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    #ssh into ec2
+    
+    steps:
+      - name: setup ssh
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/github-actions-key
+          chmod 600 ~/.ssh/github-actions-key
+          cat >>~/.ssh/config <<END
+          Host ec2
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/github-actions-key
+            StrictHostKeyChecking no
+          END
+          env:
+          SSH_HOST: ${{ env.REMOTE_HOST }}
+          SSH_USER: ${{ env.REMOTE_USER }}
+          SSH_KEY: ${{ secrets.SSH_KEY }} 
+      - name: List home directory
+        run: ssh ec2 'ls -la'
+#         run: ssh -i ~/.ssh/ruby-app.pem ubuntu@ec2-44-205-255-156.compute-1.amazonaws.com
