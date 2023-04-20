@@ -1,7 +1,8 @@
 name: "Backend Workflow"
 on:
-  # push:
-  #   branches: [ "main" ]
+  pull_request: 
+    type: 
+      - synchronize
   
 Jobs:
    test:
@@ -23,7 +24,7 @@ Jobs:
         uses: actions/checkout@v3
       # Add or replace dependency steps here
       - name: Install Ruby and gems
-        uses: ruby/setup-ruby@55283cc23133118229fd3f97f9336ee23a179fcf # v1.146.0
+        uses: ruby-database-1.ccitzzlkkej0.us-east-1.rds.amazonaws.com # v1.146.0
         with:
           bundler-cache: true
       # Add or replace database setup steps here
@@ -31,9 +32,12 @@ Jobs:
         run: bin/rails db:schema:load
       # Add or replace test runners here
       - name: Run tests
-        run: bin/rake
+        run: rails test
 
-  docker-build:
-    steps:
-    - name: Building Dockerfile
-      run:
+  # build:
+  #   runs-on: ubuntu-latest
+  #   #build docker
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Build the Docker image
+  #       run: docker build -t ruby_app . 
