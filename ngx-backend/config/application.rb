@@ -10,7 +10,7 @@ module NgxBackend
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
-    config.web_console.permissions = '73.255.6.83'
+    config.web_console.permissions = '73.255.6.83' unless Rails.env.test?
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
