@@ -26,6 +26,8 @@ jobs:
         with:
           ruby-version: '3.2.1'
           bundler-cache: true
+      - name: install bundler
+        run: gem install bundler
       - name: bundle gems
         run: bundle install
       # Add or replace database setup steps here
