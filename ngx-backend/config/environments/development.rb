@@ -2,7 +2,7 @@ require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
 
-  config.hosts << "ec2-34-224-41-156.compute-1.amazonaws.com"
+  config.hosts << "ec2-54-89-171-138.compute-1.amazonaws.com"
 
   # Settings specified here will take precedence over those in config/application.rb.
 
