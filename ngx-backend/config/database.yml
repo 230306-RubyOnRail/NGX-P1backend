@@ -24,8 +24,8 @@ development:
   adapter: postgresql
   database: postgres
   username: postgres
-  password: password
-  host: ruby-on-rails-x230306.ccitzzlkkej0.us-east-1.rds.amazonaws.com
+  password: pass1234
+  host: ruby-database-1.ccitzzlkkej0.us-east-1.rds.amazonaws.com #change
   port: 5432
   timeout: 5000
   pool: 10
