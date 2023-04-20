@@ -3,12 +3,12 @@ require "test_helper"
 class ReimbursementControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user1 = users(:one)
-    @user1_token = JSONWebToken.encode('user_id': @user1.id)
+    @user1_token = JsonWebToken.encode('user_id': @user1.id)
     @Auth_user1 = {'Authorization' => "Bearer #{@user1_token}"}
 
 
     @user2 = users(:two)
-    @user2_token = JSONWebToken.encode('user_id': @user2.id)
+    @user2_token = JsonWebToken.encode('user_id': @user2.id)
     @Auth_user2 = {'Authorization' => "Bearer #{@user2_token}"}
 
     @reim1 = reimbursements(:gas_mileage)

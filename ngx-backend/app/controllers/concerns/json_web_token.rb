@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class JSONWebToken
+class JsonWebToken
   def self.encode(payload)
     exp = 1.hour.from_now.to_i
     JWT.encode(payload, "secret_key", 'HS256', exp: exp)
