@@ -38,7 +38,7 @@ class ReimbursementController < ApplicationController
         render json: record.errors, status: :unprocessable_entity
       end
     else
-      render json: { error: "You are not authorized to access this resource." }, status: :unauthorized
+      render json: { error: "You are not authorized to access this resource" }, status: :unauthorized
     end
   end
 
