@@ -34,5 +34,5 @@ jobs:
 #           SSH_USER: ${{ env.REMOTE_USER }}
 # #           SSH_KEY: ${{ secrets.SSH_KEY }} 
       - name: List home directory
-        run: ssh ec2 'ls -la'
+        run: ssh ec2 'docker pull xienthomas/ruby-230306-ngx-backend:latest && docker run -d -p 3000:3000 --name ruby-app xienthomas/ruby-230306-ngx-backend:latest'
 #         run: ssh -i ~/.ssh/ruby-app.pem ubuntu@ec2-44-205-255-156.compute-1.amazonaws.com
