@@ -2,7 +2,7 @@ name: "Backend Workflow"
 on:
   pull_request: 
     types: 
-      - synchronize
+      - open
   
 jobs:
    test:
