@@ -17,27 +17,31 @@ jobs:
     env:
       RAILS_ENV: test
       DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
+    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
       # Add or replace dependency steps here
-      - name: change directories
-        run: cd ../../ngx-backend/
-        
       - name: Install Ruby and gems
         uses:  ruby/setup-ruby@55283cc23133118229fd3f97f9336ee23a179fcf # v1.146.0
         with:
           ruby-version: '3.2.1'
           bundler-cache: true
       - name: install bundler
+        working-directory: ./ngx-backend/
         run: gem install bundler
+        
       - name: bundle gems
+        working-directory: ./ngx-backend/
         run: bundle install
       # Add or replace database setup steps here
       - name: Set up database schema
+        working-directory: ./ngx-backend/
         run: rails db:migrate
       # Add or replace test runners here
       - name: Run tests
+        working-directory: ./ngx-backend/
         run: rails test
 
   # build:
