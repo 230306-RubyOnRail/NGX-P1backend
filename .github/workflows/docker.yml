@@ -1,0 +1,13 @@
+name: "Docker Workflow"
+on:
+  workflow_dispatch:
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    #build docker
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: docker build -t ruby_app . && docker tag ruby_app:latest xienthomas/ruby-230306-ngx-backend && docker push xienthomas/ruby-230306-ngx-backend:latest
+        
